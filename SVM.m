@@ -3,9 +3,9 @@ clear all;
 clc;
 
 % Read the clean dataset
-opts = detectImportOptions('dataset_clean.csv'); 
+opts = detectImportOptions('Dataset/dataset_clean.csv'); 
 opts.VariableNamingRule = 'preserve';  
-df = readtable('dataset_clean.csv', opts);
+df = readtable('Dataset/dataset_clean.csv', opts);
 
 % Dataset size
 size(df)
@@ -88,4 +88,6 @@ y_test(find(y_test==0))=-1;
 
 score = []
 
+N = 6;
+iterations = 100;
 
