@@ -3,9 +3,9 @@ clear all;
 clc;
 
 % Read the clean dataset
-opts = detectImportOptions('Dataset/dataset_prova_clean.csv'); 
+opts = detectImportOptions('Dataset/dataset_clean.csv'); 
 opts.VariableNamingRule = 'preserve';  
-df = readtable('Dataset/dataset_prova_clean.csv', opts);
+df = readtable('Dataset/dataset_clean.csv', opts);
 
 % Dataset size
 size(df)
@@ -40,7 +40,7 @@ y_train = y(1:floor(m*split));
 y_test = y(floor(m*split)+1:m);
 
 % Create matrix A
-A = [ ((ones(n,1)*y_train).*x_train)' y_train'];
+A = [ ((ones(n,1)*y_train).*x_train)' +y_train'];
 
 % SVM centralized approach
 lambda = 1e-2; 
@@ -70,8 +70,8 @@ y_test_0(find(y_test_0==-1))=0;
 
 % SVM Confusion Matrix and centralized ROC 
 figure
-    title('Confusion Matrix SVM centralized')
     plotconfusion(y_test_0,result_0);
+    title('Confusion Matrix SVM centralized')
     shg
 
 % ROC
@@ -102,9 +102,11 @@ y_test(find(y_test==0))=-1;
 
 score = []
 
-N = 6;
-iterations = 50;
+N = 3;
+iterations = 200;
+rng(42);  % Fissa il seme casuale a 42 (puoi scegliere qualsiasi valore intero)
 p = randi([1 N], m_train,1);
+
 for i = 1:N
     tmp{i} = A(p==i,:);
 end
@@ -112,7 +114,7 @@ A_split = tmp;
 X = zeros(n+1,N);
 z = zeros(n+1,1);
 u = zeros(n+1,N);
-rho = 1e0;
+rho = 1;
 
 score = [];
 D = [];
@@ -171,8 +173,8 @@ result_split_0(find(result_split_0==-1))=0;
 
 % Confusion matrix
 figure
-    title('Confusion Matrix SVM Split')
     plotconfusion(y_test_0,result_split_0);
+    title('Confusion Matrix SVM Split')
     shg
 
 % ROC
@@ -204,7 +206,7 @@ semilogy(D)
 xlabel('Iterations')
 ylabel('Disagreement')
 ylim([10^(-2) 10^2])
-title(['Iterations = ',num2str(iterations),' Processor = ',num2str(N),' rho = ',num2str(rho)])
+title(['Iterations = ',num2str(iterations),' | Processor = ',num2str(N),' | rho = ',num2str(rho)])
 
 subplot(2,1,2);
 plot(bound,'g')
@@ -214,4 +216,3 @@ plot(score,'r')
 xlabel('Iterations')
 ylabel('Accuracy')
 ylim([Accuracy*0.9  Accuracy*1.05])
-
