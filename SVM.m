@@ -14,10 +14,6 @@ size(df)
 % Show first 5 rows of dataset
 head(df, 5)
 
-% Randomization of dataset rows
-% df= df(randperm(size(df, 1)), :);
-% head(df, 5)
-
 % Split the dataset in training and test
 labels = df(:,1);
 y = table2array(labels);
