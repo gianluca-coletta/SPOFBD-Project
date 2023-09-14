@@ -104,7 +104,7 @@ score = []
 
 N = 3;
 iterations = 200;
-rng(42);  % Fissa il seme casuale a 42 (puoi scegliere qualsiasi valore intero)
+rng(42);  
 p = randi([1 N], m_train,1);
 
 for i = 1:N
